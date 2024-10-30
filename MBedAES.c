@@ -164,43 +164,6 @@ int main(void) {
       }
     }
 
-    for(i=0;i<NOTRACES;i++){
-      uint8_t *n0, *n1;
-      n0 = malloc(16*sizeof(uint8_t));
-      n1 = malloc(16*sizeof(uint8_t));
-      int j;
-      for(j=0; j<8; j++)
-      {
-        randbyte(&n0[j]);
-        randbyte(&n1[j]);
-      }
-      const uint64_t N0 = *n0;
-      const uint64_t N1 = *n1;
-      /* initialize */
-      ascon_state_t s;
-      s.x[0] = ASCON_128_IV;
-      s.x[1] = K0;
-      s.x[2] = K1;
-      s.x[3] = N0;
-      s.x[4] = N1;
-      
-      starttrigger();
-      
-        ROUND(&s, 0xf0);
-
-      endtrigger();
-
-      for (j=0; j<5; j++)
-      {
-        unsigned char buffer[8];
-        for (int k = 0; k < 8; k++) {
-          buffer[k] = (unsigned char)(s.x[j] >> (k * 8));
-          printbyte(&buffer[k]);   
-        }
-      }
-    }
-
-
     endprogram();
 
     return 0;
