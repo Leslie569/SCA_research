@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define NOTRACES 100
+#define NOTRACES 1000
 #define SBOX_SIZE 32
 
 #define ASCON_128_KEYBYTES 16
