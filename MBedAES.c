@@ -70,11 +70,27 @@ static inline uint64_t ROR(uint64_t x, int n) {
   return x >> n | x << (-n & 63);
 }
 
+void print_state(const ascon_state_t* s);
+
+void print_state(const ascon_state_t* s) {
+  printf("State:\n");
+  for (int i = 0; i < 5; i++) {
+      printf("  x[%d]: 0x%016llx\n", i, s->x[i]);
+  }
+}
+
 static inline void ROUND(ascon_state_t* s, uint8_t C) {
   ascon_state_t t;
+
+  // printf("Before ROUND constant addition:\n");
+  // print_state(s);
+
   /* addition of round constant */
   s->x[2] ^= C;
-  /* printstate(" round constant", s); */
+
+  // printf("After ROUND constant addition:\n");
+  // print_state(s);
+
   /* substitution layer */
   s->x[0] ^= s->x[4];
   s->x[4] ^= s->x[3];
@@ -97,7 +113,9 @@ static inline void ROUND(ascon_state_t* s, uint8_t C) {
   s->x[2] = t.x[2] ^ ROR(t.x[2], 1) ^ ROR(t.x[2], 6);
   s->x[3] = t.x[3] ^ ROR(t.x[3], 10) ^ ROR(t.x[3], 17);
   s->x[4] = t.x[4] ^ ROR(t.x[4], 7) ^ ROR(t.x[4], 41);
-//   printstate(" round output", s);
+
+  // printf("After ROUND:\n");
+  // print_state(s);
 }
 
 /* set byte in 64-bit Ascon word */
@@ -120,11 +138,13 @@ int main(void) {
     for(i=0; i<8; i++)
     {
       randbyte(&k0[i]);
+      // printf("k0[%d]: 0x%02x\n", i, k0[i]);
       randbyte(&k1[i]);
+      // printf("k1[%d]: 0x%02x\n", i, k1[i]);
     }
      /* load key and nonce */
-    const uint64_t K0 = *k0;
-    const uint64_t K1 = *k1;
+    const uint64_t K0 = LOADBYTES(k0, 8);
+    const uint64_t K1 = LOADBYTES(k1, 8);
 
     for(i=0;i<NOTRACES;i++){
       uint8_t *n0, *n1;
@@ -136,8 +156,8 @@ int main(void) {
         randbyte(&n0[j]);
         randbyte(&n1[j]);
       }
-      const uint64_t N0 = *n0;
-      const uint64_t N1 = *n1;
+      const uint64_t N0 = LOADBYTES(n0, 8);
+      const uint64_t N1 = LOADBYTES(n1, 8);
       /* initialize */
       ascon_state_t s;
       s.x[0] = ASCON_128_IV;
@@ -151,6 +171,9 @@ int main(void) {
         ROUND(&s, 0xf0);
 
       endtrigger();
+
+      // printf("Final state after round %d:\n", i);
+      // print_state(&s);
 
       for (j=0; j<5; j++)
       {

@@ -76,6 +76,17 @@ void printhex(const uint8_t *bytes, int length, FILE *outputFile) {
     }
 }
 
+/* set byte in 64-bit Ascon word */
+#define SETBYTE(b, i) ((uint64_t)(b) << (56 - 8 * (i)))
+
+/* load bytes into 64-bit Ascon word */
+static inline uint64_t LOADBYTES(const uint8_t* bytes, int n) {
+  int i;
+  uint64_t x = 0;
+  for (i = 0; i < n; ++i) x |= SETBYTE(bytes[i], i);
+  return x;
+}
+
 int main(void) {
     uint8_t *k0, *k1;
     k0 = malloc(16*sizeof(uint8_t));
@@ -96,8 +107,8 @@ int main(void) {
       readhex(&k1[i], file);
     }
     
-    const uint64_t K0 = *k0;
-    const uint64_t K1 = *k1;
+    const uint64_t K0 = LOADBYTES(k0, 8);
+    const uint64_t K1 = LOADBYTES(k1, 8);
 
     // Open output file
     FILE *outputFile = fopen("ref_output.txt", "w");
@@ -117,8 +128,8 @@ int main(void) {
             readhex(&n0[j], file);
             readhex(&n1[j], file);
         }
-        const uint64_t N0 = *n0;
-        const uint64_t N1 = *n1;
+        const uint64_t N0 = LOADBYTES(n0, 8);
+        const uint64_t N1 = LOADBYTES(n1, 8);
         /* initialize */
         ascon_state_t s;
         s.x[0] = ASCON_128_IV;
