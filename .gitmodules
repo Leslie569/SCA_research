@@ -1,0 +1,3 @@
+[submodule "ELMO"]
+	path = ELMO
+	url = https://github.com/sca-research/ELMO.git
