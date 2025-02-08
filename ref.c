@@ -93,7 +93,7 @@ int main(void) {
     k1 = malloc(16*sizeof(uint8_t));
 
     // Open input file
-    FILE *file = fopen("randdata.txt", "r");
+    FILE *file = fopen("ELMO/output/randdata.txt", "r");
     if (file == NULL) {
         perror("Failed to open randdata.txt");
         free(k0);
@@ -111,7 +111,7 @@ int main(void) {
     const uint64_t K1 = LOADBYTES(k1, 8);
 
     // Open output file
-    FILE *outputFile = fopen("ref_output.txt", "w");
+    FILE *outputFile = fopen("ELMO/output/ref_output.txt", "w");
     if (outputFile == NULL) {
         perror("Failed to open ref_output.txt");
         fclose(file);

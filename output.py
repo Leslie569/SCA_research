@@ -12,6 +12,6 @@ def group_lines(input_file, output_file, group_size=8):
             outfile.write(' '.join(line.strip() for line in group) + '\n')  # Use space as a separator
 
 # Usage
-input_file = 'printdata.txt'  # Replace with your input file name
-output_file = 'output.txt'  # Replace with your desired output file name
+input_file = 'ELMO/output/printdata.txt'  # Replace with your input file name
+output_file = 'ELMO/output/output.txt'  # Replace with your desired output file name
 group_lines(input_file, output_file)

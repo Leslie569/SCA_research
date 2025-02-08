@@ -2,3 +2,7 @@
 *Untitled*
 *.trc*
 *.map*
+*output.txt*
+*ref_output.txt*
+*randdata.txt*
+*.o*

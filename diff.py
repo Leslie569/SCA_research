@@ -17,7 +17,7 @@ def count_differences(file1_path, file2_path):
     return differences
 
 # Example usage
-file1 = 'output.txt'  # Replace with your first file name
-file2 = 'ref_output.txt'  # Replace with your second file name
+file1 = 'ELMO/output/output.txt'  # Replace with your first file name
+file2 = 'ELMO/output/ref_output.txt'  # Replace with your second file name
 diff_count = count_differences(file1, file2)
 print(f'Number of differing lines: {diff_count}')
