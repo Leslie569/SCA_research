@@ -6,7 +6,7 @@ For example
 ```export PATH="/mnt/d/opt/gcc-arm-none-eabi-10.3-2021.10/bin:$PATH"```
 
 ## Steps:
-Running from home directory:
+Running from repo directory (SCA_research):
 ```
 cp MBedAES.c ./ELMO/Examples/DPATraces/MBedAES/MBedAES.c
 cd ELMO/Examples/DPATraces/MBedAES
@@ -19,5 +19,5 @@ gcc ref.c -o ref.o
 ./ref.o
 python3 output.py
 python3 diff.py
-
 ```
+Then use plot_correlation.ipynb to plot correlation values.
